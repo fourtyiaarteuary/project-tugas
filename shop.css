@@ -1,0 +1,137 @@
+:root {
+  --bg-base: #f7f7fa;
+  --accent: #1f2937;
+  --muted: #262b2f;
+  --primary: #2b3447;
+  --radius: 12px;
+  --container-width: 1100px;
+  --gap: 1.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background-color: var(--bg-base);
+  color: var(--accent);
+  line-height: 1.6;
+  background-image: url(2.jpg);
+  background-size: cover;      /* gambar memenuhi layar */
+  background-position: center; /* posisi tengah */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* efek parallax halus */
+}
+
+
+.container {
+  width: calc(100% - 2rem);
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.site-header {
+  background: rgba(255,255,255,0.8);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #e5e5e5;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.nav a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 500;
+}
+.nav a:hover {
+  color: var(--accent);
+}
+
+.shop-hero {
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+.shop-hero h1 {
+  margin: 0 0 1rem;
+  font-size: 2.2rem;
+}
+.shop-hero p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--gap);
+}
+
+.product-card {
+  background: rgb(83, 92, 120);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.06);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.product-img {
+  max-width: 100%;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.product-name {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.product-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  flex-grow: 1;
+}
+
+.btn-buy {
+  display: inline-block;
+  margin-top: auto;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+.btn-buy:hover {
+  background-color: #7c8dbd;
+}
+
+
+.site-footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--muted);
+  border-top: 1px solid #e5e5e5;
+}
+
+@media (max-width: 600px) {
+  .shop-hero h1 { font-size: 1.8rem; }
+  .header-inner { flex-direction: column; gap: 1rem; }
+}

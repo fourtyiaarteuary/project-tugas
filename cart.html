@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Keranjang — FOuR't Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: Poppins, sans-serif; margin: 0; background: #f8f8f8; }
+    .container { max-width: 900px; margin: auto; padding: 20px; }
+    h1 { margin-bottom: 20px; }
+
+    .cart-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    .btn-remove {
+      background: #d9534f;
+      padding: 6px 12px;
+      border-radius: 5px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .total-box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .btn-checkout {
+      background: #4caf50;
+      padding: 12px;
+      width: 100%;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .success-box {
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* Tombol kembali ke shop */
+    #back-shop-btn {
+      display:none;
+      background:#3498db;
+      padding:12px;
+      width:100%;
+      margin-top:20px;
+      border:none;
+      border-radius:8px;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Keranjang Belanja</h1>
+
+  <div id="cart-items"></div>
+
+  <div class="total-box">
+    Total: Rp <span id="total-price">0</span>
+  </div>
+
+  <hr><br>
+
+  <h2>Data Pelanggan</h2>
+
+  <input type="text" id="cust-name" placeholder="Nama Lengkap">
+  <input type="email" id="cust-email" placeholder="Email">
+  <textarea id="cust-address" placeholder="Alamat Lengkap"></textarea>
+
+  <h2>Pilih Metode Pembayaran</h2>
+
+  <select id="payment-method">
+    <option value="GoPay">GoPay</option>
+    <option value="Dana">Dana</option>
+    <option value="OVO">OVO</option>
+    <option value="ShopeePay">ShopeePay</option>
+    <option value="Bank Transfer">Bank Transfer</option>
+    <option value="COD">COD (Bayar di tempat)</option>
+  </select>
+
+  <button class="btn-checkout" id="checkout-btn">Checkout</button>
+
+  <div class="success-box" id="success-msg"></div>
+
+  <button id="back-shop-btn">⬅ Kembali ke Shop</button>
+
+</div>
+
+<script>
+
+  // --- LOAD CART ---
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function renderCart() {
+    const cartContainer = document.getElementById("cart-items");
+    cartContainer.innerHTML = "";
+
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price;
+      cartContainer.innerHTML += `
+        <div class="cart-item">
+          <div>
+            <strong>${item.name}</strong><br>
+            Rp ${item.price.toLocaleString()}
+          </div>
+          <button class="btn-remove" onclick="removeItem(${index})">Hapus</button>
+        </div>
+      `;
+    });
+
+    document.getElementById("total-price").textContent = total.toLocaleString();
+  }
+
+  renderCart();
+
+
+  // --- HAPUS PRODUK ---
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+
+  // --- CHECKOUT (FIXED) ---
+  document.getElementById("checkout-btn").addEventListener("click", function() {
+
+    let name = document.getElementById("cust-name").value.trim();
+    let email = document.getElementById("cust-email").value.trim();
+    let address = document.getElementById("cust-address").value.trim();
+    let payment = document.getElementById("payment-method").value;
+
+    if (cart.length === 0) {
+      alert("Keranjang masih kosong!");
+      return;
+    }
+
+    if (!name || !email || !address) {
+      alert("Silakan lengkapi data pelanggan!");
+      return;
+    }
+
+    // --- TAMPILKAN PESAN BERHASIL ---
+    let msg = document.getElementById("success-msg");
+    msg.style.display = "block";
+    msg.innerHTML = `
+      ✔️ Checkout berhasil!<br><br>
+      Terima kasih, <b>${name}</b>.<br>
+      Metode pembayaran: <b>${payment}</b>.<br><br>
+      Pesanan akan dikirim ke:<br>
+      ${address}
+    `;
+
+    // kosongkan keranjang
+    localStorage.removeItem("cart");
+
+    // 🔥 TAMPILKAN TOMBOL "KEMBALI KE SHOP"
+    document.getElementById("back-shop-btn").style.display = "block";
+  });
+
+
+  // --- KEMBALI KE SHOP ---
+  document.getElementById("back-shop-btn").addEventListener("click", function() {
+    window.location.href = "shop.html";
+  });
+
+</script>
+
+</body>
+</html>
